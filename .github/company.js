@@ -16,6 +16,7 @@ window.onload = function () {
     const response = await fetch(endpoint);
     const data = await response.json();
     const dataResults = data.profile;
+    console.log(dataResults);
     companyImage.src = dataResults.image;
     companyName.textContent = dataResults.companyName;
     companyDescription.textContent = dataResults.description;

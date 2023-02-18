@@ -26,10 +26,40 @@ async function getSearchResults() {
   for (let i = 0; i < data.length; i++) {
     const dataSpecifics = data[i];
 
-    searchResults.innerHTML += `<li class="company-result"><a href="company.html?symbol=${dataSpecifics.symbol}"  target="_blank" class="a-href-style"><span class="symbol">${dataSpecifics.symbol}</span> - <span class="name">${dataSpecifics.name}</span></a></li>`;
+    // Get the logo image URL for the company
+    const logoEndpoint = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/company/profile/${dataSpecifics.symbol}`;
+    const logoResponse = await fetch(logoEndpoint);
+    const logoData = await logoResponse.json();
+    const logoUrl = logoData.profile.image;
+
+    // Get the stock change percentage for the company
+    const quoteEndpoint = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/quote/${dataSpecifics.symbol}`;
+    const quoteResponse = await fetch(quoteEndpoint);
+    const quoteData = await quoteResponse.json();
+    const stockChange = quoteData[0].changesPercentage;
+
+    let stockChangeColor = "black";
+    if (parseFloat(stockChange) < 0) {
+      stockChangeColor = "red";
+    } else if (parseFloat(stockChange) > 0) {
+      stockChangeColor = "lightgreen";
+    }
+
+    searchResults.innerHTML += `<li class="company-result">
+    <a href="company.html?symbol=${dataSpecifics.symbol}" target="_blank" class="a-href-style">
+      <div class="result-details">
+        <img src="${logoUrl} " alt="${dataSpecifics.name} logo" class="company-logo2">
+        <div class="company-name">
+          <span class="symbol">${dataSpecifics.symbol}</span> - <span class="name">${dataSpecifics.name}</span>
+        </div>
+        <div class="stock-change" style="color: ${stockChangeColor};">${stockChange}</div>
+      </div>
+    </a>
+  </li>`;
   }
+
   disableSpinner();
-  const newUrl = new URL(window.location.href); // to return the URL of the current page.
+  const newUrl = new URL(window.location.href);
 
   newUrl.searchParams.set("query", searchTerm);
   window.history.pushState(null, null, newUrl);
