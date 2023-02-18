@@ -26,7 +26,7 @@ async function getSearchResults() {
   for (let i = 0; i < data.length; i++) {
     const dataSpecifics = data[i];
 
-    searchResults.innerHTML += `<li class="company-result"><a href="company.html?symbol=${dataSpecifics.symbol}"  target="_blank" class="a-href-style"><span class="symbol">${dataSpecifics.symbol}</span> - <span class="name">${dataSpecifics.name}</span></a></li>`;
+    searchResults.innerHTML += `<li class="company-result"><a href="/company.html?symbol=${dataSpecifics.symbol}"  target="_blank" class="a-href-style"><span class="symbol">${dataSpecifics.symbol}</span> - <span class="name">${dataSpecifics.name}</span></a></li>`;
   }
   disableSpinner();
   searchInput.value = "";
@@ -47,3 +47,14 @@ function handleInputUp(e) {
 }
 searchButton.addEventListener("click", mainFunction);
 searchInput.addEventListener("keyup", handleInputUp);
+
+// Auto search option to the main page
+let timeout;
+function debounce(func, delay) {
+  clearTimeout(timeout);
+  timeout = setTimeout(func, delay);
+}
+searchInput.addEventListener("input", function () {
+  enableSpinner();
+  debounce(getSearchResults, 500);
+});
