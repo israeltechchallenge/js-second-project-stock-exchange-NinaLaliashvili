@@ -26,7 +26,7 @@ async function getSearchResults() {
   for (let i = 0; i < data.length; i++) {
     const dataSpecifics = data[i];
 
-    searchResults.innerHTML += `<li class="company-result"><a href="/company.html?symbol=${dataSpecifics.symbol}"  target="_blank" class="a-href-style"><span class="symbol">${dataSpecifics.symbol}</span> - <span class="name">${dataSpecifics.name}</span></a></li>`;
+    searchResults.innerHTML += `<li class="company-result"><a href="company.html?symbol=${dataSpecifics.symbol}"  target="_blank" class="a-href-style"><span class="symbol">${dataSpecifics.symbol}</span> - <span class="name">${dataSpecifics.name}</span></a></li>`;
   }
   disableSpinner();
   searchInput.value = "";
