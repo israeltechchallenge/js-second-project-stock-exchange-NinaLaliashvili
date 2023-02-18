@@ -29,7 +29,10 @@ async function getSearchResults() {
     searchResults.innerHTML += `<li class="company-result"><a href="company.html?symbol=${dataSpecifics.symbol}"  target="_blank" class="a-href-style"><span class="symbol">${dataSpecifics.symbol}</span> - <span class="name">${dataSpecifics.name}</span></a></li>`;
   }
   disableSpinner();
-  searchInput.value = "";
+  const newUrl = new URL(window.location.href); // to return the URL of the current page.
+
+  newUrl.searchParams.set("query", searchTerm);
+  window.history.pushState(null, null, newUrl);
 }
 
 //My main function.
@@ -58,3 +61,14 @@ searchInput.addEventListener("input", function () {
   enableSpinner();
   debounce(getSearchResults, 500);
 });
+
+// check if there is a query string with a search value when the page loads.
+window.onload = function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchQuery = urlParams.get("query");
+
+  if (searchQuery) {
+    searchInput.value = searchQuery;
+    mainFunction();
+  }
+};
