@@ -363,12 +363,15 @@ summary:hover {
 #marquee {
   position: relative;
   height: 24px;
+  overflow-x: hidden;
 }
 
 .marquee-container {
+  display: flex;
   white-space: nowrap;
   overflow: hidden;
   animation: marquee 15s linear infinite;
+  width: 200%;
 }
 
 .marquee-container span {

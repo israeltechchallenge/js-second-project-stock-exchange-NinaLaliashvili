@@ -1,3 +1,5 @@
+const baseUrlCompany =
+  "https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/";
 window.onload = function () {
   const companySymbol = getQueryVariable("symbol");
   const companyImage = document.getElementById("companyImage");
@@ -12,7 +14,7 @@ window.onload = function () {
 
   async function getCompanyProfile() {
     showLoadingIndicator();
-    const endpoint = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/company/profile/${companySymbol}`;
+    const endpoint = `${baseUrlCompany}company/profile/${companySymbol}`;
     const response = await fetch(endpoint);
     const data = await response.json();
     const dataResults = data.profile;
@@ -37,7 +39,7 @@ window.onload = function () {
   getCompanyProfile();
 
   async function historyOfStockPrice() {
-    const endpointHistory = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/historical-price-full/${companySymbol}?serietype=line`;
+    const endpointHistory = `${baseUrlCompany}historical-price-full/${companySymbol}?serietype=line`;
     const res = await fetch(endpointHistory);
     const dataHistory = await res.json();
     return dataHistory.historical.map((point) => ({

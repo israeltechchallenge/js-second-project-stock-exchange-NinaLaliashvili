@@ -25,10 +25,16 @@
       </button>
       <div class="loader invisible" id="loader"></div>
     </div>
+    <div class="marquee-box"></div>
     <div class="list-box">
       <ul id="searchResults"></ul>
     </div>
     <script src="marquee.js"></script>
     <script src="scripts.js"></script>
+    <script>
+      const container = document.querySelector(".marquee-box");
+      const marquee = new Marquee(container);
+      marquee.init();
+    </script>
   </body>
 </html>
