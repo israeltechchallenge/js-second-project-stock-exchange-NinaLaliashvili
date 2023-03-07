@@ -17,6 +17,9 @@ body {
   margin-bottom: -20px;
   margin-top: 40px;
 }
+#searchForm {
+  display: flex;
+}
 .container {
   text-align: center;
 }
@@ -390,4 +393,11 @@ summary:hover {
   to {
     transform: translateX(0);
   }
+}
+
+/* highlighted */
+
+.highlighted {
+  background-color: yellow;
+  font-weight: bold;
 }
