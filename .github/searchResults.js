@@ -8,8 +8,8 @@ class SearchResults {
     this.timeout = null;
     this.currentSearchTerm = "";
   }
-
   async search(searchTerm) {
+    this.currentSearchTerm = searchTerm;
     this.enableSpinner();
     const endpoint = `${this.baseUrl}search?query=${searchTerm}&limit=10&exchange=NASDAQ`;
 
@@ -28,7 +28,6 @@ class SearchResults {
       console.log("Error from server");
     }
   }
-
   async renderResult(result) {
     const listItem = document.createElement("li");
     const symbol = result.symbol;
@@ -36,16 +35,35 @@ class SearchResults {
     const logoUrl = await this.getLogoUrl(symbol);
     const stockChange = await this.getStockChange(symbol);
     const stockChangeColor = this.getStockChangeColor(stockChange);
+    const searchTerm = this.currentSearchTerm.toLowerCase();
+
+    const symbolIndex = symbol.toLowerCase().indexOf(searchTerm);
+    const nameIndex = name.toLowerCase().indexOf(searchTerm);
+
+    const symbolStart = symbol.substring(0, symbolIndex);
+    const symbolMatch = symbol.substring(
+      symbolIndex,
+      symbolIndex + searchTerm.length
+    );
+    const symbolEnd = symbol.substring(symbolIndex + searchTerm.length);
+
+    const nameStart = name.substring(0, nameIndex);
+    const nameMatch = name.substring(nameIndex, nameIndex + searchTerm.length);
+    const nameEnd = name.substring(nameIndex + searchTerm.length);
+
+    const symbolHtml = `${symbolStart}<span class="highlighted">${symbolMatch}</span>${symbolEnd}`;
+    const nameHtml = `${nameStart}<span class="highlighted">${nameMatch}</span>${nameEnd}`;
+
     listItem.innerHTML = `
-    <a href="company.html?symbol=${symbol}" target="_blank" class="a-href-style">
-      <div class="result-details">
-        <img src="${logoUrl}" alt="${name} logo" class="company-logo2">
-        <div class="company-name">
-          <span class="symbol">${symbol}</span> - <span class="name">${name}</span>
+      <a href="company.html?symbol=${symbol}" target="_blank" class="a-href-style">
+        <div class="result-details">
+          <img src="${logoUrl}" alt="${name} logo" class="company-logo2">
+          <div class="company-name">
+            <span class="symbol">${symbolHtml}</span> - <span class="name">${nameHtml}</span>
+          </div>
+          <div class="stock-change" style="color: ${stockChangeColor};">${stockChange}</div>
         </div>
-        <div class="stock-change" style="color: ${stockChangeColor};">${stockChange}</div>
-      </div>
-    </a>`;
+      </a>`;
     this.resultsList.appendChild(listItem);
   }
 
