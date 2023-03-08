@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <title>Stock Exchange</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Search Nasdaq Stocks</h1>
+    </div>
+    <div class="input-btn-box" id="searchFormContainer">
+      <form id="searchForm">
+        <input
+          type="text"
+          id="searchInput"
+          name="search"
+          class="search-input"
+          placeholder="Search..."
+        />
+        <button class="search-button" type="submit">Search</button>
+        <div class="loader invisible" id="loader"></div>
+      </form>
+    </div>
+    <div class="marquee-box"></div>
+    <div class="list-box" id="searchResultsContainer">
+      <ul id="searchResults"></ul>
+    </div>
+
+    <script src="SearchForm.js"></script>
+    <script src="SearchResults.js"></script>
+    <script src="query.js"></script>
+    <script src="marquee.js"></script>
+    <script>
+      const searchFormContainer = document.getElementById(
+        "searchFormContainer"
+      );
+      const searchForm = new SearchForm(searchFormContainer);
+
+      const searchResultsContainer = document.getElementById(
+        "searchResultsContainer"
+      );
+      const searchResults = new SearchResults(searchResultsContainer);
+
+      searchForm.onSubmit = async (searchTerm) => {
+        const results = await searchResults.search(searchTerm);
+        console.log(results);
+      };
+    </script>
+  </body>
+</html>
